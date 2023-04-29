@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import _ from 'lodash';
 
-function RandomiseCards(props) {
-  const [cards, setCards] = useState([
-    { key: 1, content: "Card 1", clickState: false, colour: 'red' },
+function RandomiseCards(props) {  /* Define the component */
+  const [cards, setCards] = useState([  /* Declare a state variable for the cards array and a setter function to update it */
+    { key: 1, content: "Card 1", clickState: false, colour: 'red' },  /* Each card has a key, content, clickState, and colour property */
     { key: 2, content: "Card 2", clickState: false, colour: 'orange' },
     { key: 3, content: "Card 3", clickState: false, colour: 'yellow' },
     { key: 4, content: "Card 4", clickState: false, colour: 'lime' },
@@ -17,28 +17,28 @@ function RandomiseCards(props) {
     { key: 12, content: "Card 12", clickState: false, colour: 'maroon' }
   ]);
 
-  const [showOverlay, setShowOverlay] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);  /* Declare a state variable for whether to show the "Congratulations!" overlay and a setter function to update it */
 
-  const clickCard = (target) => {
-    const clickedCard = cards.find(card => card.key === target);
-    if (!clickedCard.clickState) {
-      const newScores = {
-        currentScore: props.scores.currentScore += 1,
-        topScore: props.scores.currentScore > props.scores.topScore ? props.scores.currentScore : props.scores.topScore
+  const clickCard = (target) => { /* Define the function that handles a card click event */
+    const clickedCard = cards.find(card => card.key === target);  /* Find the clicked card in the cards array */
+    if (!clickedCard.clickState) {  /* If the card has not been clicked before */
+      const newScores = {  /* Declare a new scores object */
+        currentScore: props.scores.currentScore += 1,  /* Increment the user's current score */
+        topScore: props.scores.currentScore > props.scores.topScore ? props.scores.currentScore : props.scores.topScore  /* Update the user's top score if the current score is higher */
       }
-      props.updateScores(newScores);
-      clickedCard.clickState = true;
-      setCards(cards => _.shuffle(cards));
-      if (newScores.currentScore === 12) {
-        setShowOverlay(true);
+      props.updateScores(newScores);  /* Call the updateScores function with the new scores object to update the parent component's state */
+      clickedCard.clickState = true;  /* Set the clickState of the clicked card to true */
+      setCards(cards => _.shuffle(cards));  /* Shuffle the order of the cards */
+      if (newScores.currentScore === 12) {  /* If the user has clicked on all 12 cards */
+        setShowOverlay(true);  /* Set the showOverlay state variable to true to display the overlay message */
       }
-    } else  {
-      props.updateScores({ currentScore: 0, topScore: props.scores.topScore });
-      setCards(cards => {
-        cards.forEach(card => {
-          card.clickState = false;
+    } else  {  /* If the card has already been clicked before */
+      props.updateScores({ currentScore: 0, topScore: props.scores.topScore });  /* Reset the user's current score to 0 and update the top score */
+      setCards(cards => {  /* Reset the clickState of all cards and shuffle the order of the cards */
+        cards.forEach(card => {  /* Map across all cards */
+          card.clickState = false;  /* And set their clickState back to the default false */
         });
-        return _.shuffle(cards);
+        return _.shuffle(cards);  /* Shuffle the order of the cards */
       });
     }
   }
